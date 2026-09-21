@@ -25,114 +25,133 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    let isValid = true;
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError("Enter a valid email address");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+    if (!password.trim()) {
+      setPasswordError("Password is required");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+    if (!isValid) {
+      return;
+    }
+  };
 
   const handleGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const accessToken = await result.user.getIdToken();
-
-      navigate("/token", {
-        state: { accessToken },
-      });
+      navigate("/token", { state: { accessToken } });
     } catch (error) {
       console.error("Google login failed:", error);
     }
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        mt: 4,
-      }}
-    >
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 4 }}>
+      {" "}
       <TextField
         label="Email"
         type="email"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event) => {
+          setEmail(event.target.value);
+          if (emailError) {
+            setEmailError("");
+          }
+        }}
+        error={Boolean(emailError)}
+        helperText={emailError}
         fullWidth
         required
         slotProps={{
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <EmailOutlined color="action" />
+                {" "}
+                <EmailOutlined color="action" />{" "}
               </InputAdornment>
             ),
           },
         }}
         sx={{
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 2,
-          },
-          "& .MuiFormLabel-asterisk": {
-            color: "error.main",
-          },
+          "& .MuiOutlinedInput-root": { borderRadius: 2 },
+          "& .MuiFormLabel-asterisk": { color: "error.main" },
         }}
-      />
+      />{" "}
 
       <TextField
         label="Password"
         type={showPassword ? "text" : "password"}
         value={password}
-        onChange={(event) => setPassword(event.target.value)}
+        onChange={(event) => {
+          setPassword(event.target.value);
+          if (passwordError) {
+            setPasswordError("");
+          }
+        }}
+        error={Boolean(passwordError)}
+        helperText={passwordError}
         fullWidth
         required
         slotProps={{
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <LockOutlined color="action" />
+                {" "}
+                <LockOutlined color="action" />{" "}
               </InputAdornment>
             ),
             endAdornment: (
               <InputAdornment position="end">
+                {" "}
                 <IconButton
                   onClick={() => setShowPassword((previous) => !previous)}
                   edge="end"
-                  aria-label={
-                    showPassword ? "Hide password" : "Show password"
-                  }
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
+                  {" "}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}{" "}
+                </IconButton>{" "}
               </InputAdornment>
             ),
           },
         }}
         sx={{
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 2,
-          },
-          "& .MuiFormLabel-asterisk": {
-            color: "error.main",
-          },
+          "& .MuiOutlinedInput-root": { borderRadius: 2 },
+          "& .MuiFormLabel-asterisk": { color: "error.main" },
         }}
-      />
+      />{" "}
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          mt: -1,
-        }}
-      >
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -1 }}>
+        {" "}
         <Link href="#" underline="hover" color="primary" variant="body2">
-          Forgot password?
-        </Link>
-      </Box>
+          {" "}
+          Forgot password?{" "}
+        </Link>{" "}
+      </Box>{" "}
 
       <Button
         type="button"
         variant="contained"
         size="large"
         fullWidth
+        onClick={handleSubmit}
         sx={{
           mt: 1,
           py: 1.5,
@@ -148,26 +167,20 @@ function LoginForm() {
           },
         }}
       >
-        Login
-      </Button>
-
+        {" "}
+        Login{" "}
+      </Button>{" "}
       <Divider sx={{ my: 1 }}>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ px: 1 }}
-        >
-          or continue with
-        </Typography>
-      </Divider>
+        {" "}
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          gap: 2,
-        }}
-      >
+        <Typography variant="body2" color="text.secondary" sx={{ px: 1 }}>
+          {" "}
+          or continue with{" "}
+        </Typography>{" "}
+      </Divider>{" "}
+
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+        {" "}
         <IconButton
           aria-label="Continue with Google"
           onClick={handleGoogleLogin}
@@ -183,8 +196,9 @@ function LoginForm() {
             },
           }}
         >
-          <FcGoogle size={22} />
-        </IconButton>
+          {" "}
+          <FcGoogle size={22} />{" "}
+        </IconButton>{" "}
 
         <IconButton
           aria-label="Continue with Apple"
@@ -195,8 +209,9 @@ function LoginForm() {
             borderColor: "divider",
           }}
         >
-          <FaApple size={22} />
-        </IconButton>
+          {" "}
+          <FaApple size={22} />{" "}
+        </IconButton>{" "}
 
         <IconButton
           aria-label="Continue with Facebook"
@@ -207,25 +222,24 @@ function LoginForm() {
             borderColor: "divider",
           }}
         >
-          <FaFacebookF size={20} color="#1877F2" />
-        </IconButton>
-      </Box>
-
+          {" "}
+          <FaFacebookF size={20} color="#1877F2" />{" "}
+        </IconButton>{" "}
+      </Box>{" "}
+      
       <Typography
         variant="body2"
         color="text.secondary"
-        sx={{
-          textAlign: "center",
-          mt: 3,
-        }}
+        sx={{ textAlign: "center", mt: 3 }}
       >
+        {" "}
         Not a member?{" "}
         <Link href="#" underline="hover" color="primary">
-          Register now
-        </Link>
-      </Typography>
+          {" "}
+          Register now{" "}
+        </Link>{" "}
+      </Typography>{" "}
     </Box>
   );
 }
-
 export default LoginForm;
