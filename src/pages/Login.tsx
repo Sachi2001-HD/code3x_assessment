@@ -4,7 +4,7 @@ import loginImage from "../assets/login_image.svg";
 
 function Login() {
   return (
-    <Box
+    <Box 
       sx={{
         minHeight: "100vh",
         display: "flex",
@@ -50,8 +50,13 @@ function Login() {
                   variant="h3"
                   sx={{
                     fontWeight: 700,
-                    letterSpacing: "-0.5px",
-                    color: "#2d452f",
+                    color: "primary.dark",
+                    fontSize: {
+                      md: 45,
+                    },
+                    textAlign: {
+                      xs: "center",
+                    },
                   }}
                 >
                   Welcome back !
@@ -59,10 +64,13 @@ function Login() {
 
                 <Typography
                   variant="body2"
-                  color="text.secondary"
+                  color="secondary.dark"
                   sx={{
                     mt: 1,
-                    lineHeight: 1.6,
+                    lineHeight: 1.5,
+                    textAlign: {
+                      xs: "center",
+                    },
                   }}
                 >
                   Simplify your workflow and boost your productivity with Tuga's
@@ -120,7 +128,10 @@ function Login() {
                   variant="h5"
                   sx={{
                     fontSize: 20,
-                    fontWeight: "semi-bold",
+                    fontWeight: "bold",
+                    color: "secondary.light",
+                    fontFamily: "sans-serif",
+                    opacity: 0.8,
                   }}
                 >
                   Make your work easier and organized with Tuga's App.

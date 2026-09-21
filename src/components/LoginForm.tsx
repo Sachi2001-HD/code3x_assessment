@@ -9,22 +9,24 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  EmailOutlined,
+  LockOutlined,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple, FaFacebookF } from "react-icons/fa";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 
-
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -32,21 +34,23 @@ function LoginForm() {
       const result = await signInWithPopup(auth, provider);
       const accessToken = await result.user.getIdToken();
 
-      navigate("/token", { state: { accessToken } });
-
+      navigate("/token", {
+        state: { accessToken },
+      });
     } catch (error) {
       console.error("Google login failed:", error);
     }
   };
-  
+
   return (
     <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 4 }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        mt: 4,
+      }}
     >
-      {" "}
-
       <TextField
         label="Email"
         type="email"
@@ -54,11 +58,24 @@ function LoginForm() {
         onChange={(event) => setEmail(event.target.value)}
         fullWidth
         required
-        sx={{
-          "& .MuiOutlinedInput-root": { borderRadius: 2 },
-          "& .MuiFormLabel-asterisk": { color: "error.main" },
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailOutlined color="action" />
+              </InputAdornment>
+            ),
+          },
         }}
-      />{" "}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 2,
+          },
+          "& .MuiFormLabel-asterisk": {
+            color: "error.main",
+          },
+        }}
+      />
 
       <TextField
         label="Password"
@@ -69,37 +86,50 @@ function LoginForm() {
         required
         slotProps={{
           input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockOutlined color="action" />
+              </InputAdornment>
+            ),
             endAdornment: (
               <InputAdornment position="end">
-                {" "}
                 <IconButton
                   onClick={() => setShowPassword((previous) => !previous)}
                   edge="end"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={
+                    showPassword ? "Hide password" : "Show password"
+                  }
                 >
-                  {" "}
-                  {showPassword ? <Visibility /> : <VisibilityOff />}{" "}
-                </IconButton>{" "}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
               </InputAdornment>
             ),
           },
         }}
         sx={{
-          "& .MuiOutlinedInput-root": { borderRadius: 2 },
-          "& .MuiFormLabel-asterisk": { color: "error.main" },
+          "& .MuiOutlinedInput-root": {
+            borderRadius: 2,
+          },
+          "& .MuiFormLabel-asterisk": {
+            color: "error.main",
+          },
         }}
-      />{" "}
+      />
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: -1 }}>
-        {" "}
-        <Link href="#" underline="hover" color="text.primary" variant="body2">
-          {" "}
-          Forgot password?{" "}
-        </Link>{" "}
-      </Box>{" "}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          mt: -1,
+        }}
+      >
+        <Link href="#" underline="hover" color="primary" variant="body2">
+          Forgot password?
+        </Link>
+      </Box>
 
       <Button
-        type="submit"
+        type="button"
         variant="contained"
         size="large"
         fullWidth
@@ -118,21 +148,26 @@ function LoginForm() {
           },
         }}
       >
-        {" "}
-        Login{" "}
-      </Button>{" "}
+        Login
+      </Button>
 
       <Divider sx={{ my: 1 }}>
-        {" "}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ px: 1 }}
+        >
+          or continue with
+        </Typography>
+      </Divider>
 
-        <Typography variant="body2" color="text.secondary" sx={{ px: 1 }}>
-          {" "}
-          or continue with{" "}
-        </Typography>{" "}
-      </Divider>{" "}
-
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-        {" "}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 2,
+        }}
+      >
         <IconButton
           aria-label="Continue with Google"
           onClick={handleGoogleLogin}
@@ -148,10 +183,9 @@ function LoginForm() {
             },
           }}
         >
-          {" "}
-          <FcGoogle size={22} />{" "}
-        </IconButton>{" "}
-        
+          <FcGoogle size={22} />
+        </IconButton>
+
         <IconButton
           aria-label="Continue with Apple"
           sx={{
@@ -161,9 +195,8 @@ function LoginForm() {
             borderColor: "divider",
           }}
         >
-          {" "}
-          <FaApple size={22} />{" "}
-        </IconButton>{" "}
+          <FaApple size={22} />
+        </IconButton>
 
         <IconButton
           aria-label="Continue with Facebook"
@@ -174,24 +207,23 @@ function LoginForm() {
             borderColor: "divider",
           }}
         >
-          {" "}
-          <FaFacebookF size={20} color="#1877F2" />{" "}
-        </IconButton>{" "}
-      </Box>{" "}
-      
+          <FaFacebookF size={20} color="#1877F2" />
+        </IconButton>
+      </Box>
+
       <Typography
         variant="body2"
         color="text.secondary"
-        sx={{ textAlign: "center", mt: 3 }}
+        sx={{
+          textAlign: "center",
+          mt: 3,
+        }}
       >
-        {" "}
         Not a member?{" "}
-
         <Link href="#" underline="hover" color="primary">
-          {" "}
-          Register now{" "}
-        </Link>{" "}
-      </Typography>{" "}
+          Register now
+        </Link>
+      </Typography>
     </Box>
   );
 }
